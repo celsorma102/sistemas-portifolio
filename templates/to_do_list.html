@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo_dark.png') }}">
+
+    <title>CMSJ | To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .cabecalho {
+            background-color: #333;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        li {
+            display: inline;
+            margin-right: 15px;
+        }
+        header a {
+            text-decoration: none;
+            color: white;
+        }
+        .perfil {
+            display: flex;
+            align-items: center;
+        }
+        main {
+            display: flex;
+            flex-direction: column;
+            /* justify-content: center; */
+            align-items: center;
+        }
+        .funcionalidades {
+            margin: 20px;
+        }
+        .funcionalidades a{
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            background-color: #007BFF;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+        .tarefas {
+            width: 60%;
+            height: auto;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .tarefas h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        .nenhuma-tarefa {
+            text-align: center;
+            color: #777;
+            font-style: italic;}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="cabecalho">
+            <img src="{{ url_for('static', filename='logo_dark_header.png') }}" width="100px" alt="Logo">
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/sistemas">Sistemas</a></li>
+                </ul>
+            </nav>
+            <div class="perfil">
+                <span>Bem-vindo, {{ usuario }}</span>
+                <a href="/logout" style="color: white; margin-left: 15px;">Logout</a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="funcionalidades">
+            <nav>
+                <ul>
+                    <li><a href="/to_do_list/formulario_add_tarefa">Adicionar Tarefa</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="tarefas">
+            <h2>Sua Lista de Tarefas</h2>
+            {% if tarefas %}
+            <table>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Concluido</th>
+                    <th>Data de Criação</th>
+                    <th>Data de Conclusão</th>
+                    <th>Finalizar</th>
+                    <th>Deletar</th>
+                </tr>
+                {% for tarefa in tarefas %}
+                <tr>
+                    <td>{{ tarefa[2] }}</td>
+                    <td>{{ tarefa[3] }}</td>
+                    <td>{{ tarefa[4] }}</td>
+                    <td>{{ tarefa[5] }}</td>
+                    <td>
+                        {% if tarefa[3] == 'Não' %}
+                        <a href="/to_do_list/concluir_tarefa/{{ tarefa[0] }}" style="color: green; text-decoration: none;">Finalizar</a>
+                        {% else %}
+                        -
+                        {% endif %}
+                    <td><a href="/to_do_list/deletar_tarefa/{{ tarefa[0] }}" style="color: red; text-decoration: none;">Deletar</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+                <!-- <ul class="lista-tarefas">
+                    {% for tarefa in tarefas %}
+                        <li class="item-tarefa">
+                            <strong>{{ tarefa[2] }}</strong> - {{ tarefa[3] }} (Criada em: {{ tarefa[4] }})
+                        </li>
+                    {% endfor %}
+                </ul> -->
+            {% else %}
+                <p class="nenhuma-tarefa">Você não tem tarefas cadastradas, clique em "Adicionar Tarefa" para começar.</p>
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>

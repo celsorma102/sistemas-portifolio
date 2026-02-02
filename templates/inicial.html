@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo_dark.png') }}">
+    <title>CMSJ | Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .cabecalho {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        li {
+            display: inline;
+            margin-right: 15px;
+        }
+        header a {
+            text-decoration: none;
+            color: white;
+        }
+        .perfil {
+            display: flex;
+            align-items: center;
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <div class="cabecalho">
+            <img src="{{ url_for('static', filename='logo_dark_header.png') }}" width="100px" alt="Logo">
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/sistemas">Sistemas</a></li>
+                </ul>
+            </nav>
+            <div class="perfil">
+                <span>Bem-vindo, {{ usuario }}</span>
+                <a href="/logout" style="color: white; margin-left: 15px;">Logout</a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <h1 style="text-align: center; margin-top: 50px;">Página Inicial</h1>
+        <p style="text-align: center;">Bem-vindo ao CMSJ! Use o menu acima para navegar pelos sistemas disponíveis.</p>
+    </main>
+
+</body>
+</html>
