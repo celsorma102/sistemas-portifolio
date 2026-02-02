@@ -5,9 +5,11 @@ import secrets
 from datetime import datetime
 import pytz
 
+# Configuração do Flask
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(32)
 
+# Configuração do banco de dados de usuários e tarefas
 def iniciar_bd_usuarios():
     conn = sqlite3.connect("usuarios.db")
     cursor = conn.cursor()
@@ -38,10 +40,12 @@ def iniciar_bd_tarefas():
     conn.commit()
     conn.close()
 
+# Inicializa os bancos de dados
 iniciar_bd_usuarios()
 iniciar_bd_tarefas()
 
-
+# Rotas do Flask
+# Página inicial
 @app.route("/")
 def home():
     if "usuario" in session:
@@ -49,6 +53,7 @@ def home():
     else:
         return redirect(url_for("login"))
     
+# Página de login
 @app.route("/login",methods=["GET","POST"])
 def login():
     if request.method == "POST":
@@ -70,6 +75,7 @@ def login():
 
     return render_template("login.html")
 
+# Página de registro
 @app.route("/registrar", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -92,6 +98,7 @@ def register():
 
     return render_template("registrar.html")
 
+# Página de sistemas
 @app.route("/sistemas")
 def sistemas():
     if "usuario" not in session:
@@ -107,6 +114,7 @@ def sistemas():
         ]
         return render_template("sistemas.html",usuario=session["usuario"], sistemas=sistemas)
 
+# Página do To-Do List
 @app.route("/to_do_list")
 def to_do_list():
     if "usuario" in session:
@@ -116,8 +124,10 @@ def to_do_list():
         tarefas = cursor.fetchall()
         conn.close()
 
+        # Processar as tarefas para exibição
         tarefas = [list(tarefa) for tarefa in tarefas]
 
+        # Converter os valores de concluído e formatar datas para padrão brasileiro
         if tarefas:
             for tarefa in tarefas:
                 concluido = tarefa[3]
@@ -145,6 +155,7 @@ def to_do_list():
         flash("Por favor, faça login para acessar o To-Do List.", "warning")
         return redirect(url_for("login"))
 
+# Adicionar, concluir e deletar tarefas
 @app.route("/to_do_list/formulario_add_tarefa", methods=["GET"])
 def formulario_add_tarefa():
     if "usuario" in session:
@@ -197,6 +208,7 @@ def deletar_tarefa(tarefa_id):
         flash("Por favor, faça login para deletar tarefas.", "warning")
         return redirect(url_for("login"))
 
+# Página de logout
 @app.route("/logout")
 def logout():
     if "usuario" not in session:
